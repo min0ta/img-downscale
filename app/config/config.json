@@ -1,0 +1,1 @@
+{"Port":":8080","StoragePath":"./storage/","DBConnectionURL":"postgresql://postgres:root@localhost:5432/thumb","DownloadLimit":31457280,"MaxRoutines":3}
