@@ -20,8 +20,9 @@ func New(config *config.Config) (*Server, error) {
 	db := db.CreatePool(config)
 	err := db.Connect()
 	if err != nil {
-		return nil, err
+		panic(fmt.Sprintf("cannot connect to db due to %v error", err))
 	}
+	fmt.Println("succesfully connected to db")
 	pool := routinespool.New(config, db)
 	pool.Start()
 	return &Server{

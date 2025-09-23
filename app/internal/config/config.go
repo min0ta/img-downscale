@@ -10,6 +10,7 @@ import (
 type Config struct {
 	Port            string
 	StoragePath     string
+	MigrationsPath  string
 	DBConnectionURL string
 	DownloadLimit   int64
 	MaxRoutines     int
@@ -20,6 +21,7 @@ func GetDefault() *Config {
 		Port:            ":8080",
 		DBConnectionURL: "postgresql://postgres:root@localhost:5432/thumb",
 		StoragePath:     "./storage/",
+		MigrationsPath:  "./migrations/migrations.sql",
 		DownloadLimit:   30 * 1024 * 1024,
 		MaxRoutines:     5,
 	}

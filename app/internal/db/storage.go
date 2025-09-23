@@ -2,8 +2,8 @@ package db
 
 import (
 	"context"
-	"fmt"
 	"image_thumb/internal/config"
+	"os"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -17,16 +17,17 @@ func CreatePool(cfg *config.Config) *Storage {
 	db := &Storage{
 		cfg: cfg,
 	}
-	err := db.Connect()
-	if err != nil {
-		panic(fmt.Sprintf("cannot connect to db due to %v error", err))
-	}
-	fmt.Println("succesfully connected to db")
 	return db
 }
 
-func (db *Storage) ExecuteMigrations() {
-
+func (db *Storage) ExecuteMigrations() error {
+	migrationsFile, err := os.ReadFile(db.cfg.MigrationsPath)
+	if err != nil {
+		return err
+	}
+	sql := string(migrationsFile)
+	_, err = db.pool.Exec(context.Background(), sql)
+	return err
 }
 
 func (db *Storage) Connect() error {
