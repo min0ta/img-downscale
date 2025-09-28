@@ -77,7 +77,7 @@ func (db *Storage) AddTask(url string) (*Task, error) {
 
 func (db *Storage) GetTask(id string) (*Task, error) {
 	task := &Task{}
-	err := db.pool.QueryRow(context.Background(), "SELECT id, current_status, original_url, original_url, result_url, error_msg FROM tasks WHERE id = $1", id).Scan(&task.Id, &task.Current_status, &task.Original_url, &task.Result_url, &task.Error_msg)
+	err := db.pool.QueryRow(context.Background(), "SELECT id, current_status, original_url, result_url, error_msg FROM tasks WHERE id = $1", id).Scan(&task.Id, &task.Current_status, &task.Original_url, &task.Result_url, &task.Error_msg)
 	return task, err
 }
 

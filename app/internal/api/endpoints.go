@@ -35,6 +35,7 @@ func (s *Server) getTask(w http.ResponseWriter, r *http.Request) {
 
 	task, err := s.db.GetTask(id)
 	if err != nil {
+		fmt.Println("error in getTask", err)
 		s.writeError(w, ErrorBadRequest, 400)
 		return
 	}
@@ -47,4 +48,13 @@ func (s *Server) getTask(w http.ResponseWriter, r *http.Request) {
 	response.Result_url = task.Result_url
 
 	s.writeJson(w, response, 200)
+}
+
+func (s *Server) serveMenu(w http.ResponseWriter, r *http.Request) {
+	menuPath := "./menu/index.html"
+	http.ServeFile(w, r, menuPath)
+}
+
+func (s *Server) serveStatic() http.Handler {
+	return http.StripPrefix("/previews/", http.FileServer(http.Dir(s.cfg.StoragePath)))
 }

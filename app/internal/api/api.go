@@ -7,6 +7,7 @@ import (
 	"image_thumb/internal/db"
 	routinespool "image_thumb/internal/routinesPool"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -23,6 +24,10 @@ func New(config *config.Config) (*Server, error) {
 		panic(fmt.Sprintf("cannot connect to db due to %v error", err))
 	}
 	fmt.Println("succesfully connected to db")
+	err = db.ExecuteMigrations()
+	if err != nil {
+		log.Fatal("couldnt migrate with error", err)
+	}
 	pool := routinespool.New(config, db)
 	pool.Start()
 	return &Server{
@@ -36,6 +41,8 @@ func (s *Server) ListenAndServe() error {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/tasks", s.addTask)
 	mux.HandleFunc("/tasks/{id}", s.getTask)
+	mux.HandleFunc("/menu", s.serveMenu)
+	mux.Handle("/previews/", s.serveStatic())
 
 	return http.ListenAndServe(s.cfg.Port, mux)
 }

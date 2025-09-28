@@ -23,6 +23,7 @@ func main() {
 	cfg.ReadJsonConfig(configPath)
 
 	server, err := api.New(cfg)
+
 	if err != nil {
 		fmt.Println("unable create server with error %v", err)
 		os.Exit(1)
