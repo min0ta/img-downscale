@@ -3,7 +3,7 @@
 **Как запустить**
 
 ``
-cd app
+cd app &&
 go run ./cmd/main.go
 ``
 
